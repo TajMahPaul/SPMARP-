@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlite3
-
+from pathlib import Path
+import os 
 
 def add_FE_names(row):
     FE_NAMEs = {
@@ -19,14 +20,14 @@ def get_surrey(df):
     return df
 
 def insert_records(df):
-    sqliteConnection = sqlite3.connect('surrey.db')
+    sqliteConnection = sqlite3.connect(os.path.join(os.path.dirname(__file__),'surrey.db'))
     df.to_sql('demand_points', con=sqliteConnection, if_exists='replace', index=False)
 
 
 
 def main():
-    df_DA = pd.read_csv(".\\raw_data\\DA.csv")
-    df_DB = pd.read_csv(".\\raw_data\\DB.csv")
+    df_DA = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'DA.csv'))
+    df_DB = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'DB.csv'))
 
     surrey_DA = get_surrey(df_DA)
     surrey_DB = get_surrey(df_DB)
