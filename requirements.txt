@@ -1,3 +1,5 @@
 numpy
 pandas
 googlemaps
+networkx==1.9.1
+supervisor==4.1.0
