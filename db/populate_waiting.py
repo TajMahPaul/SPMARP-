@@ -1,9 +1,17 @@
+import numpy as np
 import pandas as pd
 import sqlite3
 from pathlib import Path
 import os 
 
-waiting_points = pd.DataFrame(np.array([["Bear Creek Park", 32, "Surrey-Centre/Whalley", 49.161383456039424, -122.84075812112808],
+
+
+def insert_records(df):
+    sqliteConnection = sqlite3.connect(os.path.join(os.path.dirname(__file__),'surrey.db'))
+    df.to_sql('waiting_points', con=sqliteConnection, if_exists='replace', index=False)
+
+def main():
+    waiting_points_whalley = pd.DataFrame(np.array([ ["Bear Creek Park", 32, "Surrey-Centre/Whalley", 49.161383456039424, -122.84075812112808],
                                         ["Walmart Supercenter (88ave)", 32, "Surrey-Centre/Whalley", 49.164798886139444, -122.87728979723549],
                                         ["Devon Gardens Elementary", 32, "Surrey-Centre/Whalley", 49.164811236711394, -122.91464087440681],
                                         ["Big plaza at 88 and scott road", 32, "Surrey-Centre/Whalley", 49.16316787821308, -122.89116665706219],
@@ -12,7 +20,7 @@ waiting_points = pd.DataFrame(np.array([["Bear Creek Park", 32, "Surrey-Centre/W
                                         ["Delview Secondary School", 32, "Surrey-Centre/Whalley", 49.16904757390888, -122.90256871805357],
                                         ["Kennedy Park", 32, "Surrey-Centre/Whalley", 49.16834352390594, -122.88958231071858],
                                         ["Royal Heights Park", 32, "Surrey-Centre/Whalley", 49.18058245443267, -122.90497575218133],
-                                        ["Royal Heights Elementary School", 32, 49.17932812230354, -122.89809230677821],
+                                        ["Royal Heights Elementary School", "Surrey-Centre/Whalley", 32, 49.17932812230354, -122.89809230677821],
                                         ["Jagga Sweets", 32, "Surrey-Centre/Whalley", 49.17200628921393, -122.89055923197498],
                                         ["Robertson Drive Park", 32, "Surrey-Centre/Whalley", 49.168687539819665, -122.87039799586984],
                                         ["LA Matheson Secondary School", 32, "Surrey-Centre/Whalley", 49.17540473873445, -122.88402203419959],
@@ -74,35 +82,9 @@ waiting_points = pd.DataFrame(np.array([["Bear Creek Park", 32, "Surrey-Centre/W
                                         ["Prince Charles Elementary School", 32, "Surrey-Centre/Whalley", 49.18572444946391, -122.8773959904833],
                                         ["Brooke Elementary School", 32, "Surrey-Centre/Whalley", 49.16352308630861, -122.92566355797689],
                                         ["Queen Elizabeth Secondary School", 32, "Surrey-Centre/Whalley", 49.17371112323518, -122.84700493889056],
-                                        ["APH Matthew Park", 32, "Surrey-Centre/Whalley", 49.17973374729407, -122.85377220651083]                                  
-
-]))
-# '''CREATE TABLE IF NOT EXISTS waiting_points (WPid integer PRIMARY KEY AUTOINCREMENT, name text, FEDcode integer, FEDname text, lon integer, lat integer)'''
-def add_FE_names(row):
-    FE_NAMEs = {
-        32:'Surrey-Centre/Whalley',
-        12:'Fleetwood/Port Kells',
-        7: 'Cloverdale',
-        30: 'White Rock/South Surrey',
-        33: 'Surrey Newton'
-    }
-    return FE_NAMEs[row['FEDcode']]
-
-
-def main():
-    df_DA = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'DA.csv'))
-    df_DB = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'DB.csv'))
-
-    surrey_DA = get_surrey(df_DA)
-    surrey_DB = get_surrey(df_DB)
-
-    surrey_DB = surrey_DB[['DAcode', 'FEDcode']].drop_duplicates(subset=['DAcode'])
-    surrey_df = pd.merge(surrey_DA, surrey_DB[['DAcode','FEDcode']],on='DAcode', how='left')
-    surrey_df['FEDName'] = surrey_df.apply(add_FE_names, axis=1)
-    surrey_df = surrey_df[['DAuid', 'DApop_2016', 'DAarea', 'DArplat', 'DArplong', 'FEDcode', 'FEDName']]
-    surrey_df = surrey_df.rename(columns={"DApop_2016": "population_val", "DArplat": "lat", "DArplong": "lon"})
-    insert_records(surrey_df)
+                                        ["APH Matthew Park", 32, "Surrey-Centre/Whalley", 49.17973374729407, -122.85377220651083] ]), columns=['name', 'FEDcode', 'FEDname', 'lon', 'lat'])
     
+    insert_records(waiting_points_whalley)
 
 if __name__ == "__main__":
     main()

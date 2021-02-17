@@ -7,4 +7,7 @@ class Data:
         self.connection = sqlite3.connect(os.path.join(os.path.dirname(__file__),'surrey.db'))
 
     def get_demand(self):
-        return pd.read_sql('select * from demand_points', con=self.connection)  
+        return pd.read_sql('select * from demand_points', con=self.connection)
+
+    def get_waiting(self):
+        return pd.read_sql('select * from waiting_points', con=self.connection)    
