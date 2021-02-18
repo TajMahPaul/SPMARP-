@@ -4,20 +4,23 @@ import sqlite3
 from pathlib import Path
 import os
 import googlemaps
-import networkx as nx
 
 key = "AIzaSyApefMuRG57ImJYcHR0gDFzGXecDBL-iDw"
 gmaps = googlemaps.Client(key=key)
-# geocode_result = gmaps.geocode('1600 Amphitheatre Parkway, Mountain View, CA')
+
+def get_lon_lat(row):
+    address_string = row['HUNDRED_BLOCK'] + ', Surrey, BC'
+    geocode_result = gmaps.geocode(address_string)
+    lon = geocode_result[0]['geometry']['location']['lng']
+    lat = geocode_result[0]['geometry']['location']['lat']
+    return pd.Series([lon, lat])
+
 
 def main():
 
-    # df_crime = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'crime2019.csv'))
-    # one_crime = df_crime.loc[0]
-    # # geocode_result = gmaps.geocode(one_crime['HUNDRED_BLOCK'] + ', Surrey, BC')
-    # print(geocode_result)
-    G = nx.read_gml(os.path.join(os.path.dirname(__file__), 'raw_data', 'gfed000a11g_e.gml'))
-    print(G.node)
+    df_crime = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'crime_2020.csv'), skiprows=range(1, 11), nrows=1000)
+    df_crime[['lon', 'lat']] = df_crime.apply(get_lon_lat, axis=1)
+    df_crime.to_csv(os.path.join(os.path.dirname(__file__), 'filter_data', 'crime.csv'), mode='a', index=False)
 
 
 if __name__ == "__main__":
