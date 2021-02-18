@@ -22,7 +22,7 @@ def get_lon_lat(row):
 
 def main():
 
-    df_crime = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'crime_2020.csv'), skiprows=range(1, 1011), nrows=1000)
+    df_crime = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'crime_2020.csv'), skiprows=range(1, 14011))
     df_crime[['lon', 'lat']] = df_crime.apply(get_lon_lat, axis=1)
     df_crime.to_csv(os.path.join(os.path.dirname(__file__), 'filter_data', 'crime.csv'), mode='a', index=False, header=False)
 
