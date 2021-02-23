@@ -6,10 +6,10 @@ def main():
     
     try:
         # Create tables
-        c.execute('''CREATE TABLE IF NOT EXISTS waiting_points (WPid integer PRIMARY KEY AUTOINCREMENT, name text, FEDcode integer, FEDname text, lon real, lat real)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS waiting_points (name text PRIMARY KEY, FEDcode integer, FEDname text, lon real, lat real)''')
         c.execute('''CREATE TABLE IF NOT EXISTS demand_points (DAuid integer PRIMARY KEY, FEDcode integer, FEDname text, lon real, lat real, crime_index real, population_val real)''')
         c.execute('''CREATE TABLE IF NOT EXISTS crime_points (CAuid integer PRIMARY KEY AUTOINCREMENT, file_number type, text, location_string text, month integer, year integer, lon real, lat real, closest_demand integers, FEDcode integer)''')
-        c.execute('''CREATE TABLE IF NOT EXISTS distances (WPid integer, DAuid integer, value real)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS distances (WPname name, DAuid integer, value real)''')
     except Exception as e:
         raise(e)
     finally:
