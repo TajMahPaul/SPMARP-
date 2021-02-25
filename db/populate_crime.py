@@ -1,31 +1,14 @@
-#  this file will be to populate distances using google maps api
 import pandas as pd
-import numpy as np
 import sqlite3
 from pathlib import Path
-import os
-import googlemaps
-
-key = "AIzaSyApefMuRG57ImJYcHR0gDFzGXecDBL-iDw"
-gmaps = googlemaps.Client(key=key)
-
-def get_lon_lat(row):
-    address_string = row['HUNDRED_BLOCK'] + ', Surrey, BC'
-    geocode_result = gmaps.geocode(address_string)
-    try:
-        lon = geocode_result[0]['geometry']['location']['lng']
-        lat = geocode_result[0]['geometry']['location']['lat']
-    except:
-        return pd.Series([np.nan,np.nan])
-    return pd.Series([lon, lat])
-
+import os 
 
 def main():
-
-    df_crime = pd.read_csv(os.path.join(os.path.dirname(__file__), 'raw_data', 'crime_2020.csv'), skiprows=range(1, 14011))
-    df_crime[['lon', 'lat']] = df_crime.apply(get_lon_lat, axis=1)
-    df_crime.to_csv(os.path.join(os.path.dirname(__file__), 'filter_data', 'crime.csv'), mode='a', index=False, header=False)
-
+    crime_df = pd.read_csv(os.path.join(os.path.dirname(__file__),'filter_data', 'crime_matched.csv'))
+    crime_df = crime_df.drop(columns=['INCIDENT_TYPE'])
+    crime_df = crime_df.rename(columns={"HUNDRED_BLOCK": "location_string", "demand_point": "closest_demand", "MONTH": "month", "YEAR": "year", "FILE_NUMBER": "file_number"})
+    sqliteConnection = sqlite3.connect(os.path.join(os.path.dirname(__file__),'surrey.db'))
+    crime_df.to_sql('crime_points', con=sqliteConnection, if_exists='replace', index=False)
 
 if __name__ == "__main__":
     main()
