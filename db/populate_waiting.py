@@ -29,6 +29,7 @@ def main():
                                         ["Kwantlen Park", 32, "Surrey-Centre/Whalley", 49.19231778262659, -122.86341770459984],
                                         ["King George Skytrain", 32, "Surrey-Centre/Whalley", 49.182481964458994, -122.84374366480155],
                                         ["Surrey Central", 32, "Surrey-Centre/Whalley", 49.189535827335895, -122.8475398262315],
+                                        ["Surrey RCMP City Centre", 32, "Surrey-Centre/Whalley", 49.19736417274005, -122.84496916732236],
                                         ["APH Matthew Park", 32, "Surrey-Centre/Whalley", 49.17973374729407, -122.85377220651083] ]), columns=['name', 'FEDcode', 'FEDname', 'lon', 'lat'])
     
     waiting_points_newton = pd.DataFrame(np.array([ ["Nordel Crossing Shopping Mall", 33, "Surrey Newton", 49.16104243899859, -122.88865587131885], 
@@ -47,12 +48,64 @@ def main():
                                                  ["Panorama Park", 33, "Surrey Newton", 49.112649904758, -122.86519265156743],
                                                  ["Tamanawis Park", 33, "Surrey Newton", 49.12000384653464, -122.87397204769884],
                                                  ["Goldstone Park", 33, "Surrey Newton", 49.10916663022377, -122.81623995208818],
+                                                 ["Royal Canadian Mounted Police", 33, "Surrey Newton", 49.107025425725375, -122.8244847402248],
                                                  ["West Newton Community Park", 33, "Surrey Newton", 49.1092704144431, -122.86057679520977],
                                                  ["Surrey RCMP District #3 Newton", 33, "Surrey Newton", 49.13438186323409, -122.8435026171556],
-                                                 ["King's Cross Shopping Centre", 33, "Surrey Newton", 49.13835815761408, -122.84374257798639],
+                                                 ["King's Cross Shopping Centre", 33, "Surrey Newton", 49.13835815761408, -122.84374257798639]
                                                  
                                                  ]))
 
+    waiting_points_fleetwood = pd.DataFrame(np.array([ ["Hawthorne Park", 12, "Fleetwood/Port Kells", 49.194293852181154, -122.82525889712429],
+                                              ["Guildford Town Centre Shopping Mall", 12, "Fleetwood/Port Kells", 49.18971183911622, -122.80367239167182],
+                                              ["Royal Canadian Mounted Police", 12, "Fleetwood/Port Kells", 49.19116938902156, -122.81309341483708],
+                                              ["Riverside Heights Shopping Centre Shopping Mall", 12, "Fleetwood/Port Kells", 49.19926557107054, -122.81132354023254],
+                                              ["Surrey Bend Regional Park", 12, "Fleetwood/Port Kells", 49.19432107678709, -122.7293082759732],
+                                              ["Fleetwood Park", 12, "Fleetwood/Port Kells", 49.14781441541337, -122.78117394619879],
+                                              ["Surrey Lake Park", 12, "Fleetwood/Port Kells", 49.13927308960329, -122.80029424566669],
+                                              ["Maple Green Park", 12, "Fleetwood/Port Kells", 49.16510673434747, -122.80777508939637],
+                                              ["RCMP E-Division Headquarters", 12, "Fleetwood/Port Kells", 49.18013371631835, -122.8290536569733],
+                                              ["Invergarry Bike Park", 12, "Fleetwood/Port Kells", 49.20794266165954, -122.81561068953008],
+                                              ["Fraser View Park", 12, "Fleetwood/Port Kells", 49.206228454196506, -122.7778762790848],
+                                              ["Bonnie Schrenk Park", 12, "Fleetwood/Port Kells", 49.15413989972187, -122.76416001200707],
+                                              ["Tynehead Regional Park", 12, "Fleetwood/Port Kells", 49.17770674869902, -122.76075680798155],
+                                              ["Port Kells Park", 12, "Fleetwood/Port Kells", 49.1622496141686, -122.68619782931457]
+
+                                            ]))
+
+    waiting_points_cloverdale = pd.DataFrame(np.array([ ["North Creek Park", 7, "Cloverdale", 49.1321628523296, -122.72942945407485], 
+                                                ["Hazelgrove Park", 7, "Cloverdale", 49.131407394343455, -122.69576298916574],
+                                                ["Brooks Crescent Park", 7, "Cloverdale", 49.112863037325106, -122.68271761563372],
+                                                ["Sunrise Ridge Park", 7, "Cloverdale", 49.10892373087935, -122.70377923462273],
+                                                ["Don Christian Park", 7, "Cloverdale", 49.115861354718454, -122.71104191201809],
+                                                ["Cloverdale Ball Park", 7, "Cloverdale", 49.115124466669315, -122.74147125579762],
+                                                ["Katzei Park", 7, "Cloverdale", 49.12764098096632, -122.6853245350876],
+                                                ["Hi-Knoll Park", 7, "Cloverdale", 49.092798819999025, -122.68070439458927],
+                                                ["Claude Harvie Park", 7, "Cloverdale", 49.10737272282152, -122.71694530918182],
+                                                ["Cloverdale Heights Park", 7, "Cloverdale", 49.10919137738007, -122.75021872584512],
+                                                ["Royal Canadian Mounted Police", 7, "Cloverdale", 49.10646036064877, -122.73319992063335],
+                                                ["Hillcrest Park", 7, "Cloverdale", 49.122177457766576, -122.70866377816668],
+                                                ["North Cloverdale West Park", 7, "Cloverdale", 49.12523290483206, -122.71881229060615],
+                                                ["Hunter Park", 7, "Cloverdale", 7, "Cloverdale", 49.10183349389153, -122.70841441602116],
+                                                ["Royal Canadian Mounted Police", 7, "Cloverdale", 49.10647633307813, -122.73349034912661],
+                                                ["Greenaway Park", 7, "Cloverdale", 49.11182828374219, -122.72684933230092]
+                                            
+                                             ]))
+
+waiting_points_white_rock = pd.DataFrame(np.array([ ["Crescent Beach", 30, "White Rock/South Surrey", 49.05881587775597, -122.88148227520253],
+                                                    ["Crescent Park", 30, "White Rock/South Surrey", 49.049562077200555, -122.86348973512933],
+                                                    ["Kwomais Point Park", 30, "White Rock/South Surrey", 49.02769443381753, -122.86805946382756],
+                                                    ["South Surrey Athletic Park", 30, "White Rock/South Surrey", 49.039206941325325, -122.81761561543483],
+                                                    ["Peace Arch Hospital", 30, "White Rock/South Surrey", 49.0303975907737, -122.79318478985397],
+                                                    ["Peace Arch Provincial Park", 30, "White Rock/South Surrey", 49.00578322388365, -122.75850651044877],
+                                                    ["Redwood Park", 30, "White Rock/South Surrey", 49.03591073795251, -122.7250129785101],
+                                                    ["Latimer Park", 30, "White Rock/South Surrey", 49.0512642348224, -122.69119059490397],
+                                                    ["Semiahmoo Shopping Centre", 30, "White Rock/South Surrey", 49.032784706643554, -122.80322188455305],
+                                                    ["Centennial Park", 30, "White Rock/South Surrey", 49.029476102832035, -122.81658481917272],
+                                                    ["The Shops at Morgan Crossing Outlet", 30, "White Rock/South Surrey", 49.04813617899905, -122.78349352621741],
+                                                    ["Elgin Heritage Park", 30, "White Rock/South Surrey", 49.06488413728526, -122.84269477822286],
+                                                    ["South Surrey RCMP", 30, "White Rock/South Surrey", 49.03488590031148, -122.80093099642106]
+
+]))
 
 
     insert_records(waiting_points_whalley)
