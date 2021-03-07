@@ -30,7 +30,7 @@ def main():
                                         ["King George Skytrain", 32, "Surrey-Centre/Whalley", 49.182481964458994, -122.84374366480155],
                                         ["Surrey Central", 32, "Surrey-Centre/Whalley", 49.189535827335895, -122.8475398262315],
                                         ["Surrey RCMP City Centre", 32, "Surrey-Centre/Whalley", 49.19736417274005, -122.84496916732236],
-                                        ["APH Matthew Park", 32, "Surrey-Centre/Whalley", 49.17973374729407, -122.85377220651083] ]), columns=['name', 'FEDcode', 'FEDname', 'lon', 'lat'])
+                                        ["APH Matthew Park", 32, "Surrey-Centre/Whalley", 49.17973374729407, -122.85377220651083] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
     
     waiting_points_newton = pd.DataFrame(np.array([ ["Nordel Crossing Shopping Mall", 33, "Surrey Newton", 49.16104243899859, -122.88865587131885], 
                                                  ["Super Store", 33, "Surrey Newton", 49.151140221826765, -122.89182837805852],

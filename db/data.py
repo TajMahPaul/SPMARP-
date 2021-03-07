@@ -10,4 +10,10 @@ class Data:
         return pd.read_sql('select * from demand_points', con=self.connection)
 
     def get_waiting(self):
-        return pd.read_sql('select * from waiting_points', con=self.connection)    
+        return pd.read_sql('select * from waiting_points', con=self.connection)
+
+    def get_crime(self):
+        return pd.read_sql('select * from crime_points', con=self.connection)    
+
+    def get_distances(self):
+        return pd.read_sql('select * from distances', con=self.connection)    
