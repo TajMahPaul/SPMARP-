@@ -49,9 +49,7 @@ def main():
                                                  ["Goldstone Park", 33, "Surrey Newton", 49.10916663022377, -122.81623995208818],
                                                  ["West Newton Community Park", 33, "Surrey Newton", 49.1092704144431, -122.86057679520977],
                                                  ["Surrey RCMP District #3 Newton", 33, "Surrey Newton", 49.13438186323409, -122.8435026171556],
-                                                 ["King's Cross Shopping Centre", 33, "Surrey Newton", 49.13835815761408, -122.84374257798639],
-                                                 
-                                                 ]))
+                                                 ["King's Cross Shopping Centre", 33, "Surrey Newton", 49.13835815761408, -122.84374257798639] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
 
 
 
