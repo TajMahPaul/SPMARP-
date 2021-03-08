@@ -81,7 +81,7 @@ def main():
                                                 ["Royal Canadian Mounted Police", 7, "Cloverdale", 49.10646036064877, -122.73319992063335],
                                                 ["Hillcrest Park", 7, "Cloverdale", 49.122177457766576, -122.70866377816668],
                                                 ["North Cloverdale West Park", 7, "Cloverdale", 49.12523290483206, -122.71881229060615],
-                                                ["Hunter Park", 7, "Cloverdale", 7, "Cloverdale", 49.10183349389153, -122.70841441602116],
+                                                ["Hunter Park", 7, "Cloverdale", 49.10183349389153, -122.70841441602116],
                                                 ["Royal Canadian Mounted Police", 7, "Cloverdale", 49.10647633307813, -122.73349034912661],
                                                 ["Greenaway Park", 7, "Cloverdale", 49.11182828374219, -122.72684933230092] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
 
@@ -100,8 +100,8 @@ def main():
                                                     ["South Surrey RCMP", 30, "White Rock/South Surrey", 49.03488590031148, -122.80093099642106] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
 
 
-    insert_records(waiting_points_newton)
-    insert_records(waiting_points_fleetwood)
+    # insert_records(waiting_points_newton)
+    # insert_records(waiting_points_fleetwood)
     insert_records(waiting_points_cloverdale)
     insert_records(waiting_points_white_rock)
 
