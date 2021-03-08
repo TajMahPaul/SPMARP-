@@ -3,3 +3,5 @@ pandas
 googlemaps
 networkx==1.9.1
 supervisor==4.1.0
+matplotlib==3.3.2
+mplleaflet==0.0.5

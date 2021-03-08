@@ -11,7 +11,7 @@ def insert_records(df):
     df.to_sql('waiting_points', con=sqliteConnection, if_exists='replace', index=False)
 
 def main():
-    waiting_points_whalley = pd.DataFrame(np.array([ ["Bear Creek Park", 32, "Surrey-Centre/Whalley", 49.161383456039424, -122.84075812112808],
+    waiting_points = pd.DataFrame(np.array([ ["Bear Creek Park", 32, "Surrey-Centre/Whalley", 49.161383456039424, -122.84075812112808],
                                         ["Walmart Supercenter (88ave)", 32, "Surrey-Centre/Whalley", 49.164798886139444, -122.87728979723549],
                                         ["Big plaza at 88 and scott road", 32, "Surrey-Centre/Whalley", 49.16316787821308, -122.89116665706219],
                                         ["LA Matheson Secondary School/Moffat Park", 32, "Surrey-Centre/Whalley", 49.17540473873445, -122.88402203419959],
@@ -32,7 +32,7 @@ def main():
                                         ["Surrey RCMP City Centre", 32, "Surrey-Centre/Whalley", 49.19736417274005, -122.84496916732236],
                                         ["APH Matthew Park", 32, "Surrey-Centre/Whalley", 49.17973374729407, -122.85377220651083] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
     
-    waiting_points_newton = pd.DataFrame(np.array([ ["Nordel Crossing Shopping Mall", 33, "Surrey Newton", 49.16104243899859, -122.88865587131885], 
+    waiting_points = waiting_points.append(pd.DataFrame(np.array([ ["Nordel Crossing Shopping Mall", 33, "Surrey Newton", 49.16104243899859, -122.88865587131885], 
                                                  ["Super Store", 33, "Surrey Newton", 49.151140221826765, -122.89182837805852],
                                                  ["Scott Road Centre Shopping Mall", 33, "Surrey Newton", 49.14994315530216, -122.88893334238882],
                                                  ["Srawberry Hill Shopping Centre Shopping Mall", 33, "Surrey Newton", 49.13517773529771, -122.88755922607767],
@@ -51,9 +51,9 @@ def main():
                                                  ["Royal Canadian Mounted Police", 33, "Surrey Newton", 49.107025425725375, -122.8244847402248],
                                                  ["West Newton Community Park", 33, "Surrey Newton", 49.1092704144431, -122.86057679520977],
                                                  ["Surrey RCMP District #3 Newton", 33, "Surrey Newton", 49.13438186323409, -122.8435026171556],
-                                                 ["King's Cross Shopping Centre", 33, "Surrey Newton", 49.13835815761408, -122.84374257798639] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
+                                                 ["King's Cross Shopping Centre", 33, "Surrey Newton", 49.13835815761408, -122.84374257798639] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon']))
 
-    waiting_points_fleetwood = pd.DataFrame(np.array([ ["Hawthorne Park", 12, "Fleetwood/Port Kells", 49.194293852181154, -122.82525889712429],
+    waiting_points = waiting_points.append(pd.DataFrame(np.array([ ["Hawthorne Park", 12, "Fleetwood/Port Kells", 49.194293852181154, -122.82525889712429],
                                               ["Guildford Town Centre Shopping Mall", 12, "Fleetwood/Port Kells", 49.18971183911622, -122.80367239167182],
                                               ["Royal Canadian Mounted Police", 12, "Fleetwood/Port Kells", 49.19116938902156, -122.81309341483708],
                                               ["Riverside Heights Shopping Centre Shopping Mall", 12, "Fleetwood/Port Kells", 49.19926557107054, -122.81132354023254],
@@ -66,9 +66,9 @@ def main():
                                               ["Fraser View Park", 12, "Fleetwood/Port Kells", 49.206228454196506, -122.7778762790848],
                                               ["Bonnie Schrenk Park", 12, "Fleetwood/Port Kells", 49.15413989972187, -122.76416001200707],
                                               ["Tynehead Regional Park", 12, "Fleetwood/Port Kells", 49.17770674869902, -122.76075680798155],
-                                              ["Port Kells Park", 12, "Fleetwood/Port Kells", 49.1622496141686, -122.68619782931457] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
+                                              ["Port Kells Park", 12, "Fleetwood/Port Kells", 49.1622496141686, -122.68619782931457] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon']))
 
-    waiting_points_cloverdale = pd.DataFrame(np.array([ ["North Creek Park", 7, "Cloverdale", 49.1321628523296, -122.72942945407485], 
+    waiting_points = waiting_points.append(pd.DataFrame(np.array([ ["North Creek Park", 7, "Cloverdale", 49.1321628523296, -122.72942945407485], 
                                                 ["Hazelgrove Park", 7, "Cloverdale", 49.131407394343455, -122.69576298916574],
                                                 ["Brooks Crescent Park", 7, "Cloverdale", 49.112863037325106, -122.68271761563372],
                                                 ["Sunrise Ridge Park", 7, "Cloverdale", 49.10892373087935, -122.70377923462273],
@@ -83,9 +83,9 @@ def main():
                                                 ["North Cloverdale West Park", 7, "Cloverdale", 49.12523290483206, -122.71881229060615],
                                                 ["Hunter Park", 7, "Cloverdale", 49.10183349389153, -122.70841441602116],
                                                 ["Royal Canadian Mounted Police", 7, "Cloverdale", 49.10647633307813, -122.73349034912661],
-                                                ["Greenaway Park", 7, "Cloverdale", 49.11182828374219, -122.72684933230092] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
+                                                ["Greenaway Park", 7, "Cloverdale", 49.11182828374219, -122.72684933230092] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon']))
 
-    waiting_points_white_rock = pd.DataFrame(np.array([ ["Crescent Beach", 30, "White Rock/South Surrey", 49.05881587775597, -122.88148227520253],
+    waiting_points = waiting_points.append(pd.DataFrame(np.array([ ["Crescent Beach", 30, "White Rock/South Surrey", 49.05881587775597, -122.88148227520253],
                                                     ["Crescent Park", 30, "White Rock/South Surrey", 49.049562077200555, -122.86348973512933],
                                                     ["Kwomais Point Park", 30, "White Rock/South Surrey", 49.02769443381753, -122.86805946382756],
                                                     ["South Surrey Athletic Park", 30, "White Rock/South Surrey", 49.039206941325325, -122.81761561543483],
@@ -97,13 +97,11 @@ def main():
                                                     ["Centennial Park", 30, "White Rock/South Surrey", 49.029476102832035, -122.81658481917272],
                                                     ["The Shops at Morgan Crossing Outlet", 30, "White Rock/South Surrey", 49.04813617899905, -122.78349352621741],
                                                     ["Elgin Heritage Park", 30, "White Rock/South Surrey", 49.06488413728526, -122.84269477822286],
-                                                    ["South Surrey RCMP", 30, "White Rock/South Surrey", 49.03488590031148, -122.80093099642106] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
+                                                    ["South Surrey RCMP", 30, "White Rock/South Surrey", 49.03488590031148, -122.80093099642106] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon']))
 
+    print(waiting_points)
+    insert_records(waiting_points)
 
-    # insert_records(waiting_points_newton)
-    # insert_records(waiting_points_fleetwood)
-    insert_records(waiting_points_cloverdale)
-    insert_records(waiting_points_white_rock)
 
 
 
