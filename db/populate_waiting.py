@@ -33,7 +33,6 @@ def main():
                                         ["APH Matthew Park", 32, "Surrey-Centre/Whalley", 49.17973374729407, -122.85377220651083] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon'])
     
     waiting_points = waiting_points.append(pd.DataFrame(np.array([ ["Nordel Crossing Shopping Mall", 33, "Surrey Newton", 49.16104243899859, -122.88865587131885], 
-                                                 ["Super Store", 33, "Surrey Newton", 49.151140221826765, -122.89182837805852],
                                                  ["Scott Road Centre Shopping Mall", 33, "Surrey Newton", 49.14994315530216, -122.88893334238882],
                                                  ["Srawberry Hill Shopping Centre Shopping Mall", 33, "Surrey Newton", 49.13517773529771, -122.88755922607767],
                                                  ["Sunshine Hills Center Shopping Mall", 33, "Surrey Newton", 49.12002062040362, -122.89175370307956],
@@ -42,7 +41,6 @@ def main():
                                                  ["TE Scott Park", 33, "Surrey Newton", 49.13037084018439, -122.81147797791704],
                                                  ["Surrey Lake Park", 33, "Surrey Newton", 49.138399550984865, -122.79614612704677],
                                                  ["Chimney Heights Park", 33, "Surrey Newton", 49.138556607716716, -122.81531466423046],
-                                                 ["Bear Creek Park", 33, "Surrey Newton", 49.159596885999484, -122.84092847109878],
                                                  ["Hazelnut Meadows Community Park", 33, "Surrey Newton", 49.127854674248496, -122.83193509116693],
                                                  ["Unwin Park", 33, "Surrey Newton", 49.12715293603855, -122.85384248228392],
                                                  ["Panorama Park", 33, "Surrey Newton", 49.112649904758, -122.86519265156743],
@@ -58,6 +56,7 @@ def main():
                                               ["Royal Canadian Mounted Police", 12, "Fleetwood/Port Kells", 49.19116938902156, -122.81309341483708],
                                               ["Riverside Heights Shopping Centre Shopping Mall", 12, "Fleetwood/Port Kells", 49.19926557107054, -122.81132354023254],
                                               ["Surrey Bend Regional Park", 12, "Fleetwood/Port Kells", 49.19432107678709, -122.7293082759732],
+                                              ["Hemlock Park", 12, "Fleetwood/Port Kells", 49.17187849493195, -122.78266199414952]
                                               ["Fleetwood Park", 12, "Fleetwood/Port Kells", 49.14781441541337, -122.78117394619879],
                                               ["Surrey Lake Park", 12, "Fleetwood/Port Kells", 49.13927308960329, -122.80029424566669],
                                               ["Maple Green Park", 12, "Fleetwood/Port Kells", 49.16510673434747, -122.80777508939637],
@@ -93,8 +92,11 @@ def main():
                                                     ["Peace Arch Provincial Park", 30, "White Rock/South Surrey", 49.00578322388365, -122.75850651044877],
                                                     ["Redwood Park", 30, "White Rock/South Surrey", 49.03591073795251, -122.7250129785101],
                                                     ["Latimer Park", 30, "White Rock/South Surrey", 49.0512642348224, -122.69119059490397],
+                                                    ["Dr. RJ Allan Hogg Rotary Park", 30, "White Rock/South Surrey", 49.02416625235945, -122.79344504996257],
+                                                    ["Dogwood Park", 30, "White Rock/South Surrey", 49.03890118942815, -122.84918709556298],
                                                     ["Semiahmoo Shopping Centre", 30, "White Rock/South Surrey", 49.032784706643554, -122.80322188455305],
                                                     ["Centennial Park", 30, "White Rock/South Surrey", 49.029476102832035, -122.81658481917272],
+                                                    ["Blumsen Park", 30, "White Rock/South Surrey", 49.06413099881579, -122.79365748633471],
                                                     ["The Shops at Morgan Crossing Outlet", 30, "White Rock/South Surrey", 49.04813617899905, -122.78349352621741],
                                                     ["Elgin Heritage Park", 30, "White Rock/South Surrey", 49.06488413728526, -122.84269477822286],
                                                     ["South Surrey RCMP", 30, "White Rock/South Surrey", 49.03488590031148, -122.80093099642106] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon']))
