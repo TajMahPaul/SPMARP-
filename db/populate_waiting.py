@@ -56,7 +56,7 @@ def main():
                                               ["Royal Canadian Mounted Police", 12, "Fleetwood/Port Kells", 49.19116938902156, -122.81309341483708],
                                               ["Riverside Heights Shopping Centre Shopping Mall", 12, "Fleetwood/Port Kells", 49.19926557107054, -122.81132354023254],
                                               ["Surrey Bend Regional Park", 12, "Fleetwood/Port Kells", 49.19432107678709, -122.7293082759732],
-                                              ["Hemlock Park", 12, "Fleetwood/Port Kells", 49.17187849493195, -122.78266199414952]
+                                              ["Hemlock Park", 12, "Fleetwood/Port Kells", 49.17187849493195, -122.78266199414952],
                                               ["Fleetwood Park", 12, "Fleetwood/Port Kells", 49.14781441541337, -122.78117394619879],
                                               ["Surrey Lake Park", 12, "Fleetwood/Port Kells", 49.13927308960329, -122.80029424566669],
                                               ["Maple Green Park", 12, "Fleetwood/Port Kells", 49.16510673434747, -122.80777508939637],
