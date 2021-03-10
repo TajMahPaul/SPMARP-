@@ -8,7 +8,7 @@ def main():
         # Create tables
         c.execute('''CREATE TABLE IF NOT EXISTS waiting_points (name text PRIMARY KEY, FEDcode integer, FEDname text, lon real, lat real)''')
         c.execute('''CREATE TABLE IF NOT EXISTS demand_points (DAuid integer PRIMARY KEY, FEDcode integer, FEDname text, lon real, lat real, crime_index real, population_val real)''')
-        c.execute('''CREATE TABLE IF NOT EXISTS crime_points (file_number text PRIMARY KEY, location_string text, month integer, year integer, lon real, lat real, closest_demand integers, distance real)''')
+        c.execute('''CREATE TABLE IF NOT EXISTS crime_points (file_number text PRIMARY KEY, type string, location_string text, month integer, year integer, lon real, lat real, closest_demand integers, distance real)''')
         c.execute('''CREATE TABLE IF NOT EXISTS distances (WPname name, DAuid integer, distance real)''')
     except Exception as e:
         raise(e)
