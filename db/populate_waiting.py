@@ -105,7 +105,7 @@ def main():
                                                     ["South Surrey RCMP", 30, "White Rock/South Surrey", 49.03488590031148, -122.80093099642106] ]), columns=['name', 'FEDcode', 'FEDname', 'lat', 'lon']))
 
     print(waiting_points)
-    insert_records(waiting_points)
+    # insert_records(waiting_points)
 
 
 
