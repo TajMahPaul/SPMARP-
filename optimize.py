@@ -25,8 +25,7 @@ incident_weight = {'Break and Enter - Business':3,
  'Theft from Motor Vehicle':4,
  'Theft of Motor Vehicle':4}
 
-
-def relocation_model(distances, waiting, pop_dict, crime_dict, coverage, MAX_OFFICERS, lamb):
+def relocation_model_con_pop(distances, waiting, pop_dict, crime_dict, coverage, MAX_OFFICERS, lamb):
 
     regions, population = gp.multidict(pop_dict)
     regions, crime_index = gp.multidict(crime_dict)
@@ -61,18 +60,79 @@ def relocation_model(distances, waiting, pop_dict, crime_dict, coverage, MAX_OFF
     for size in range(1,MAX_OFFICERS):
         m.addConstrs( (build_change[wait,size] <= ALPHA for wait in waits), name="cease_wait")
 
-    
-    obj1 = gp.quicksum(prob[k]*population[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
-    obj2 = gp.quicksum(prob[k]*crime_index[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
+    m.addConstr(gp.quicksum(population[r]*is_covered[r,15]for r in regions) >= lamb, name="crime")
 
-    m.setObjective(lamb*(obj1) + (1-lamb)*obj2, GRB.MAXIMIZE)
-    m.optimize()
+    obj = gp.quicksum(crime_index[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
+
+    try:
+        m.setObjective(obj, GRB.MAXIMIZE)
+        m.optimize()
+        return m, build
+    except Exception as e:
+        print(str(e))
+        return None, None
+
+    # obj1 = gp.quicksum(population[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
+    # obj2 = gp.quicksum(crime_index[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
+
+    # m.setObjective(lamb*(obj1) + (1-lamb)*obj2, GRB.MAXIMIZE)
+    # m.optimize()
+
+
+def relocation_model_con_crime(distances, waiting, pop_dict, crime_dict, coverage, MAX_OFFICERS, lamb):
+
+    regions, population = gp.multidict(pop_dict)
+    regions, crime_index = gp.multidict(crime_dict)
+
+    total_pop = population
+    total_crime = crime_index
+    waits, covered = gp.multidict(coverage)
+    prob = [comb(MAX_OFFICERS,k)*((0.6)**k)*((0.4)**(MAX_OFFICERS-k)) for k in range(0,MAX_OFFICERS+1)]
+
+    m = gp.Model("SPMARP")
+    m.Params.LogToConsole = 0 #dont print model information
+    wait_size = [(name,size) for name in list(waiting['name']) for size in range(0,MAX_OFFICERS+1)]
+    demand_size = [(DAuid,size) for DAuid in list(distances.columns) for size in range(0,MAX_OFFICERS+1)]
+
+    build = m.addVars(wait_size, vtype=GRB.BINARY, name="wait_points")
+    is_covered = m.addVars(demand_size, vtype=GRB.BINARY, name="Is_covered")
+    build_change = m.addVars(wait_size, vtype=GRB.BINARY, name="wait_change")
+
+    #sum demand points only where officers can reach
+    for size in range(0,MAX_OFFICERS+1):
+        m.addConstrs((gp.quicksum(build[wait,size] for wait in waits if r in covered[wait]) >= is_covered[r,size] for r in regions), name="Build2cover")
+
+    #only allow max officers
+    for size in range(0,MAX_OFFICERS+1):
+        m.addConstr(gp.quicksum(build[wait,size] for wait in waits) == size, name="officers")   
+
+    #Control waiting site change
+    for size in range(1,MAX_OFFICERS):
+        m.addConstrs( (build[wait,size] - build[wait,size+1] <= build_change[wait,size] for wait in waits), name="cease_wait")
+
+    #Max amount of location changes
+    for size in range(1,MAX_OFFICERS):
+        m.addConstrs( (build_change[wait,size] <= ALPHA for wait in waits), name="cease_wait")
+
+    m.addConstr(gp.quicksum(crime_index[r]*is_covered[r,15]for r in regions) >= lamb, name="crime")
+
+    obj = gp.quicksum(population[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
+
+    try:
+        m.setObjective(obj, GRB.MAXIMIZE)
+        m.optimize()
+        return m, build
+    except Exception as e:
+        print(str(e))
+        return None, None
+    # obj1 = gp.quicksum(population[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
+    # obj2 = gp.quicksum(crime_index[r]*is_covered[r,k] for r in regions for k in range(1,MAX_OFFICERS+1))
+
+    # m.setObjective(lamb*(obj1) + (1-lamb)*obj2, GRB.MAXIMIZE)
+    # m.optimize()
 
     return m, build
 
-def get_covered_matrix():
-    return
- 
 def main():
 
     # get values from db
@@ -113,28 +173,81 @@ def main():
     crime_dict = pd.Series(crime.incidents.values,index=(crime.DAuid)).to_dict()
 
     results = {}
-    n_range = range(5,20, 5)
-    lambda_range = [.05, .10, .15, .20, .25, .30, .35, .40, .45, .50, .55, .60, .65, .70, .75, .80, .85, .90, .95]
+    N=
+    lambda_range = range(850, 1000)
+    lambda_range = [float(l)/1000 for l in lambda_range]
     x = []
     y = []
     for l in lambda_range:
-
+        
         WPnames = []
-        m, build = relocation_model(distances_pivot, waiting, pop_dict, crime_dict, coverage, 15, l)
+        results[l] = {}
+        m, build = relocation_model_con_pop(distances_pivot, waiting, pop_dict, crime_dict, coverage, 15, l)
+    
         for points in build.keys():
+
+            try: 
+                test = abs(build[points].x)
+            except Exception as e:
+                print (str(e))
+                print(l)
+                break
+
             if (abs(build[points].x) > 1e-6):
                 if points[1] == 15:
                     WPnames.append(points[0])
-        covered_da = distances[distances['WPname'].isin(WPnames)]
-        covered_da = covered_da[covered_da['in_range'] == 1 ]['DAuid'].unique()
-        crime_perc = crime[crime['DAuid'].isin(covered_da)]['incidents'].sum()
-        pop_perc = demand[demand['DAuid'].isin(covered_da)]['population_val'].sum()
-        x.append(crime_perc)
-        y.append(pop_perc)
-        plt.annotate("{l}".format(l=l), (crime_perc, pop_perc))
+        else:
+            covered_da = distances[distances['WPname'].isin(WPnames)]
+            covered_da = covered_da[covered_da['in_range'] == 1 ]['DAuid'].unique()
+            crime_perc = crime[crime['DAuid'].isin(covered_da)]['incidents'].sum()
+            pop_perc = demand[demand['DAuid'].isin(covered_da)]['population_val'].sum()
+            results[l]['crime'] = crime_perc
+            results[l]['pop'] = pop_perc
+            x.append(crime_perc)
+            y.append(pop_perc)
+            # Continue if the inner loop wasn't broken.
+            continue
+        # Inner loop was broken, break the outer.
+        break
 
-    plt.plot(x, y, 'o')
+        
 
+    plt.plot(x, y, 'o', label="Maximization of Crime")
+    
+    print("done contraint pop")
+    for l in lambda_range:
+        WPnames = []
+        results[l] = {}
+        m, build = relocation_model_con_crime(distances_pivot, waiting, pop_dict, crime_dict, coverage, 15, l)
+        for points in build.keys():
+            try: 
+                test = abs(build[points].x)
+            except Exception as e:
+                print (str(e))
+                print(l)
+                break
+            if (abs(build[points].x) > 1e-6):
+                if points[1] == 15:
+                    WPnames.append(points[0])
+        else:
+            covered_da = distances[distances['WPname'].isin(WPnames)]
+            covered_da = covered_da[covered_da['in_range'] == 1 ]['DAuid'].unique()
+            crime_perc = crime[crime['DAuid'].isin(covered_da)]['incidents'].sum()
+            pop_perc = demand[demand['DAuid'].isin(covered_da)]['population_val'].sum()
+            results[l]['crime'] = crime_perc
+            results[l]['pop'] = pop_perc
+            x.append(crime_perc)
+            y.append(pop_perc)
+            # Continue if the inner loop wasn't broken.
+            continue
+        # Inner loop was broken, break the outer.
+        break
+
+    print("done contraint crime")
+
+    plt.plot(x, y, 'x', label="Maximization of Population")
+
+    plt.title("Pereto Analysis on Crime and Population Coverage")
     plt.xlabel("Crime")
     plt.ylabel("Population")
     plt.legend()
