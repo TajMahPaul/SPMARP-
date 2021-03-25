@@ -174,84 +174,30 @@ def main():
 
     results = {}
     
-    lambda_range = range(850, 1000)
-    lambda_range = [float(l)/1000 for l in lambda_range]
     x = []
     y = []
-    for l in lambda_range:
         
-        WPnames = []
-        results[l] = {}
-        m, build = relocation_model_con_pop(distances_pivot, waiting, pop_dict, crime_dict, coverage, 15, l)
-    
-        for points in build.keys():
+    WPnames = []
+    l = 0.9185
+    m, build = relocation_model_con_pop(distances_pivot, waiting, pop_dict, crime_dict, coverage, 15, l)
+    for points in build.keys():
 
-            try: 
-                test = abs(build[points].x)
-            except Exception as e:
-                print (str(e))
-                print(l)
-                break
+        try: 
+            test = abs(build[points].x)
+        except Exception as e:
+            print (str(e))
+            print(l)
+            break
 
-            if (abs(build[points].x) > 1e-6):
-                if points[1] == 15:
-                    WPnames.append(points[0])
-        else:
-            covered_da = distances[distances['WPname'].isin(WPnames)]
-            covered_da = covered_da[covered_da['in_range'] == 1 ]['DAuid'].unique()
-            crime_perc = crime[crime['DAuid'].isin(covered_da)]['incidents'].sum()
-            pop_perc = demand[demand['DAuid'].isin(covered_da)]['population_val'].sum()
-            results[l]['crime'] = crime_perc
-            results[l]['pop'] = pop_perc
-            x.append(crime_perc)
-            y.append(pop_perc)
-            # Continue if the inner loop wasn't broken.
-            continue
-        # Inner loop was broken, break the outer.
-        break
+        if (abs(build[points].x) > 1e-6):
+            if points[1] == 9:
+                WPnames.append(points[0])
+            
 
-        
-
-    plt.plot(x, y, 'o', label="Maximization of Crime")
-    
-    print("done contraint pop")
-    for l in lambda_range:
-        WPnames = []
-        results[l] = {}
-        m, build = relocation_model_con_crime(distances_pivot, waiting, pop_dict, crime_dict, coverage, 15, l)
-        for points in build.keys():
-            try: 
-                test = abs(build[points].x)
-            except Exception as e:
-                print (str(e))
-                print(l)
-                break
-            if (abs(build[points].x) > 1e-6):
-                if points[1] == 15:
-                    WPnames.append(points[0])
-        else:
-            covered_da = distances[distances['WPname'].isin(WPnames)]
-            covered_da = covered_da[covered_da['in_range'] == 1 ]['DAuid'].unique()
-            crime_perc = crime[crime['DAuid'].isin(covered_da)]['incidents'].sum()
-            pop_perc = demand[demand['DAuid'].isin(covered_da)]['population_val'].sum()
-            results[l]['crime'] = crime_perc
-            results[l]['pop'] = pop_perc
-            x.append(crime_perc)
-            y.append(pop_perc)
-            # Continue if the inner loop wasn't broken.
-            continue
-        # Inner loop was broken, break the outer.
-        break
-
-    print("done contraint crime")
-
-    plt.plot(x, y, 'x', label="Maximization of Population")
-
-    plt.title("Pereto Analysis on Crime and Population Coverage")
-    plt.xlabel("Crime")
-    plt.ylabel("Population")
-    plt.legend()
-    plt.show()
+    output_wp = waiting[waiting['name'].isin(WPnames)]
+    plt.plot(output_wp['lon'].astype(np.float64), output_wp['lat'].astype(np.float64), 'bs')
+     
+    mplleaflet.show()
 
 
 if __name__ == "__main__":
