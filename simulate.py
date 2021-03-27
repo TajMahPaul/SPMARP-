@@ -51,9 +51,8 @@ model = {}
 
 # set data class as global
 data = Data()
-
-def get_crime_overage(patrol):
-
+def remove_values_from_list(the_list, val):
+   return [value for value in the_list if value != val]
 
 def get_events(crime_stats, n):
     events = []
@@ -92,11 +91,55 @@ def main():
     coverage_pop = []
     coverage_crime = []
 
+    officer_busy = []
+    crime_waiting = []
+    printed_n = None
+    printed_p = None
+    printed_c = None
     for h in range(0,24):
         for m in range(0,60):
-            current_events = crime[crime['time'] == (h,m)]
 
+            # check if officers become free
+            if (h,m) in officer_busy:
+                current_number = len(officer_busy)
+                officer_busy = remove_values_from_list(officer_busy, (h,m))
+                difference =  current_number - len(officer_busy)
+                n = n + difference
 
+            # check if crimes are waiting and officers are available
+            if n > 0 and len(crime_waiting) > 0:
+                for i in range(n):
+                    if len(crime_waiting) > 0:
+                        officer_busy.append((h+1, m))
+                        crime_waiting.pop()
+                        n = n - 1
+
+            # now check if a crime accures at this time 
+            current_crimes  = crime[crime['time'] == (h,m)]
+            # there are crimes occuring and here are officers available
+            if not current_crimes.empty and n > 0:
+                for i in range (n):
+                    if not current_crimes.empty:
+                        officer_busy.append((h+1, m))
+                        current_crimes = current_crimes[1:]
+                        current_crimes = current_crimes.reset_index(drop=True)
+                        n = n - 1
+            
+            # no officers available and crimes are being committed
+            
+            if not current_crimes.empty and n == 0:
+                while not current_crimes.empty:
+                    crime_waiting.append(current_crimes.iloc[0]['closest_demand'])
+                    current_crimes = current_crimes[1:]
+                    current_crimes = current_crimes.reset_index(drop=True)
+
+            if  printed_p != len(officer_busy) or printed_c != len(crime_waiting) or printed_n != n:
+                printed_p = len(officer_busy)
+                printed_c = len(crime_waiting)
+                printed_n = n
+                print('There are now {p} officers on patrol, there are now {c} crime waiting, there are {n} officers waiting'.format(p=printed_p, c=printed_c, n=printed_n))
+                if (printed_p + n != 9):
+                    print('WTF\n\n\n\n\n\n\n')
 
 if __name__ == "__main__":
     main()
