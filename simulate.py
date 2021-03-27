@@ -5,6 +5,7 @@ import numpy as np
 import googlemaps
 import random
 
+
 map = {
     '12AM': 0,
     '1AM': 1,
@@ -44,15 +45,20 @@ model_alpha_1 = {
     9: ['Plaza at 88 and scott road', 'King George Skytrain', 'Chimney Heights Park', 'Unwin Park', 'Fraser Heights Park', 'Fleetwood Park', 'Hillcrest Park', 'Dogwood Park', 'The Shops at Morgan Crossing Outlet']
 }
 
-key = "AIzaSyBYdFvLeDTTUdif62AJ4hXuTcMI7_hGrx0"
-gmaps = googlemaps.Client(key=key)
-
-model = {}
-
 # set data class as global
 data = Data()
+
 def remove_values_from_list(the_list, val):
    return [value for value in the_list if value != val]
+
+def calc_time(distance_km):
+    return 2.52977421*distance_km+1.00638416
+
+def calc_clostest_waiting_distance(demand_point, distances, patrol):
+    distances = distances[distances['WPname'].isin(patrol)]
+    distances = distances[distances['DAuid'] == demand_point]
+    distances = distances[distances['distance'] == distances['distance'].min()]
+    return distances
 
 def get_events(crime_stats, n):
     events = []
@@ -73,7 +79,7 @@ def get_events(crime_stats, n):
     return events
 
 def main():
-    distance = data.get_distances()
+    distances = data.get_distances()
     crime = data.get_crime()
     crime = crime[crime['month']==3]
     crime = crime.sample(frac=1).reset_index(drop=True)
@@ -111,7 +117,11 @@ def main():
                 for i in range(n):
                     if len(crime_waiting) > 0:
                         officer_busy.append((h+1, m))
-                        crime_waiting.pop()
+                        demand_point = crime_waiting.pop()
+                        distance_to_travel = calc_clostest_waiting_distance(demand_point, distances, model_alpha_1[n])
+                        distance_in_km = distance_to_travel['distance'].values[0] / 1000
+                        time_to_travel = calc_time(distance_in_km)
+                        response_time.append(time_to_travel)
                         n = n - 1
 
             # now check if a crime accures at this time 
@@ -121,8 +131,13 @@ def main():
                 for i in range (n):
                     if not current_crimes.empty:
                         officer_busy.append((h+1, m))
+                        demand_point = current_crimes.iloc[0]['closest_demand']
                         current_crimes = current_crimes[1:]
                         current_crimes = current_crimes.reset_index(drop=True)
+                        distance_to_travel = calc_clostest_waiting_distance(demand_point, distances, model_alpha_1[n])
+                        distance_in_km = distance_to_travel['distance'].values[0] / 1000
+                        time_to_travel = calc_time(distance_in_km)
+                        response_time.append(time_to_travel)
                         n = n - 1
             
             # no officers available and crimes are being committed
@@ -140,6 +155,6 @@ def main():
                 print('There are now {p} officers on patrol, there are now {c} crime waiting, there are {n} officers waiting'.format(p=printed_p, c=printed_c, n=printed_n))
                 if (printed_p + n != 9):
                     print('WTF\n\n\n\n\n\n\n')
-
+    print(response_time)
 if __name__ == "__main__":
     main()
